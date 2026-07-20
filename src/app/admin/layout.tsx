@@ -2,7 +2,7 @@
 
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
-import { logout } from './logout/actions'   // <-- importação correta
+import { logout } from './logout/actions'   // <-- agora actions.ts
 
 const navItems = [
   { name: 'Dashboard', href: '/admin/dashboard' },
@@ -19,7 +19,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
   const pathname = usePathname()
 
   const handleLogout = async () => {
-    await logout()   // <-- chama a Server Action
+    await logout()
   }
 
   return (

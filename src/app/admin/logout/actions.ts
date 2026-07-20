@@ -30,9 +30,9 @@ export async function logout() {
     }
   )
 
-  // Faz logout e remove a sessão
+  // Faz logout
   await supabase.auth.signOut()
 
-  // Redireciona para a página de login
+  // Redireciona para login
   redirect('/admin/login')
 }

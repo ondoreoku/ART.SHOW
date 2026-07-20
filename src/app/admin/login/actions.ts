@@ -4,7 +4,10 @@ import { createServerClient } from '@supabase/ssr'
 import { cookies } from 'next/headers'
 import { redirect } from 'next/navigation'
 
-export async function logout() {
+export async function login(formData: FormData) {
+  const email = formData.get('email') as string
+  const password = formData.get('password') as string
+
   const cookieStore = cookies()
 
   const supabase = createServerClient(
@@ -30,9 +33,15 @@ export async function logout() {
     }
   )
 
-  // Faz logout e remove a sessão
-  await supabase.auth.signOut()
+  const { data, error } = await supabase.auth.signInWithPassword({
+    email,
+    password,
+  })
 
-  // Redireciona para a página de login
-  redirect('/admin/login')
+  if (error) {
+    return { error: error.message }
+  }
+
+  // Redireciona para o dashboard
+  redirect('/admin/dashboard')
 }
