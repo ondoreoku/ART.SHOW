@@ -1,5 +1,5 @@
-// src/app/page.tsx
 import { supabase } from '@/lib/supabaseServer'
+import SecaoDestaques from '@/components/SecaoDestaques'
 
 export default async function Home() {
   const { data: configs } = await supabase.from('site_config').select('chave, valor')
@@ -20,7 +20,8 @@ export default async function Home() {
         if (sec.nome === 'destaques') {
           return <SecaoDestaques key={sec.id} config={sec.configuracao} />
         }
-        // outras secções...
+        // Adiciona mais condições para outras secções (ex: 'sobre', 'contacto')
+        return null
       })}
     </div>
   )
