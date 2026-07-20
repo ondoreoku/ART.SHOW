@@ -34,3 +34,5 @@ Thumbs.db
 
 # Supabase (se tiveres ficheiros de configuração local)
 supabase/.temp/
+.env.template
+next-env.d.ts
