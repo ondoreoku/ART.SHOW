@@ -1,9 +1,8 @@
-// src/app/admin/layout.tsx
 'use client'
 
 import Link from 'next/link'
-import { usePathname, useRouter } from 'next/navigation'
-import { supabase } from '@/lib/supabase'
+import { usePathname } from 'next/navigation'
+import { logout } from './logout/actions'   // <-- importação correta
 
 const navItems = [
   { name: 'Dashboard', href: '/admin/dashboard' },
@@ -18,11 +17,9 @@ const navItems = [
 
 export default function AdminLayout({ children }: { children: React.ReactNode }) {
   const pathname = usePathname()
-  const router = useRouter()
 
   const handleLogout = async () => {
-    await supabase.auth.signOut()
-    router.push('/admin/login')
+    await logout()   // <-- chama a Server Action
   }
 
   return (

@@ -2,9 +2,7 @@ import { createServerClient } from '@supabase/ssr'
 import { NextResponse, type NextRequest } from 'next/server'
 
 export async function middleware(request: NextRequest) {
-  let response = NextResponse.next({
-    request,
-  })
+  let response = NextResponse.next({ request })
 
   const supabase = createServerClient(
     process.env.NEXT_PUBLIC_SUPABASE_URL!,
@@ -17,9 +15,7 @@ export async function middleware(request: NextRequest) {
         setAll(cookiesToSet) {
           cookiesToSet.forEach(({ name, value, options }) => {
             request.cookies.set(name, value)
-            response = NextResponse.next({
-              request,
-            })
+            response = NextResponse.next({ request })
             response.cookies.set(name, value, {
               ...options,
               path: '/',
@@ -33,14 +29,11 @@ export async function middleware(request: NextRequest) {
     }
   )
 
-  // Usar getSession em vez de getUser para garantir que a sessão é lida
-  const { data: { session } } = await supabase.auth.getSession()
-  const user = session?.user
+  const { data: { user } } = await supabase.auth.getUser()
 
-  // Logs para debug
+  // Logs para debug (podes remover depois)
   console.log('🔍 [middleware] Path:', request.nextUrl.pathname)
   console.log('🔍 [middleware] User:', user?.email || 'não autenticado')
-  console.log('🔍 [middleware] Cookies:', request.cookies.getAll().map(c => c.name))
 
   // Se não estiver autenticado e tentar aceder a /admin/* (exceto login)
   if (!user && request.nextUrl.pathname.startsWith('/admin') && request.nextUrl.pathname !== '/admin/login') {
